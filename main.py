@@ -51,6 +51,15 @@ def main():
             f.write(REVIEW)
         # File only: never chmod a directory (the grader owns /output).
         os.chmod(output_path, 0o644)
+        # Read-back: the file on disk must be byte-identical to REVIEW,
+        # so a partial write can never silently pass as the entry.
+        with open(output_path, "rb") as f:
+            if f.read() != REVIEW.encode("utf-8"):
+                print(
+                    f"error: read-back mismatch on {output_path}",
+                    file=sys.stderr,
+                )
+                return 1
     except OSError as exc:
         print(f"error: cannot write {output_path}: {exc}", file=sys.stderr)
         return 1
