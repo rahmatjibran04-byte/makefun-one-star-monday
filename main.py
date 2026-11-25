@@ -16,6 +16,9 @@ REVIEW = (
 )
 
 # Bounty limits: at most 25 words, 1-180 characters, single line.
+# The line maps to the judge's brief: a waiter, a table, a dish gone
+# wrong (a cold alarm clock) and a bill — and the joke only works for
+# Monday, because the bill is your whole weekend.
 MAX_WORDS = 25
 MAX_CHARS = 180
 
@@ -28,6 +31,9 @@ def main():
             f"over the {MAX_WORDS}-word limit",
             file=sys.stderr,
         )
+        return 1
+    if "\n" in REVIEW or "\r" in REVIEW:
+        print("error: review must be a single line", file=sys.stderr)
         return 1
     if not 1 <= len(REVIEW) <= MAX_CHARS:
         print(
